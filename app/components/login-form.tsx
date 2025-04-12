@@ -1,11 +1,18 @@
+"use client";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
+import { useFormState } from "react-dom"
+import { signIn } from "@/lib/auth"
+import { BACKEND_URL } from "@/lib/constants";
+import Link from "next/link";
+import { SubmitButton } from "./SubmitBotton";
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [state,action]=useFormState(signIn,undefined)
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden h-full">
@@ -19,7 +26,7 @@ export function LoginForm({
               className="absolute inset-0 w-full h-full object-cover"
             />
           </div>
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" action={action}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -34,14 +41,17 @@ export function LoginForm({
                   type="email"
                   placeholder="Name@example.com"
                   required
+                  name="email"
                   className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-12 px-4"/>
               </div>
+              {state?.error?.email && ( <p className="text-sm text-red-500">{state.error.email}</p>)}
+
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                  
                 </div>
-                <input id="password" type="password" placeholder="your password" required className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-12 px-4" />
+                <input id="password" type="password" name="password" placeholder="your password" required className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-12 px-4" />
                 <a
                     href="#"
                     className="ml-auto text-sm underline-offset-2 hover:underline"
@@ -50,16 +60,18 @@ export function LoginForm({
                   </a>
 
                 </div>
-              <Button type="submit" className="w-full " variant="default">
-                Login
-              </Button>
+                {state?.error?.password && ( <p className="text-sm text-red-500">{state.error.password}</p>)}
+
+                
+                <SubmitButton text="Sign in" variant="default" />              <div className="flex flex-col gap-2">{state?.message && <p className="text-sm text-red-500">{state.message}</p>}</div>
+
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                 <span className="relative z-10 bg-background px-2 text-muted-foreground">
                   Or continue with
                 </span>
               </div>
               <div className="grid grid-cols-1">
-              
+              <Link href={`${BACKEND_URL}/auth/google/login`}>
               <Button variant="outline" className="w-full max-w-[400px]">
 
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -68,12 +80,12 @@ export function LoginForm({
                       fill="currentColor"
                     />
                   </svg>
-                  <span >Login with Google</span>
+                 <span >Login with Google</span>
                 </Button>
-              
+                </Link>
               </div>
               <div className="text-center text-sm">
-                Already have an account?{" "}
+               Don't have an account?{" "}
                 <a href={`/register`} className="underline underline-offset-4">
                   Sign up
                 </a>

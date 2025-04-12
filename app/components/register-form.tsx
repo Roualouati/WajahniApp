@@ -1,18 +1,25 @@
+"use client";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
+import { useFormState } from "react-dom"
+import { signUp } from "@/lib/auth"
+import { error } from "console";
+import { BACKEND_URL } from "@/lib/constants";
+import { SubmitButton } from "./SubmitBotton";
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [state,action]=useFormState(signUp,undefined)
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden h-full">
         <CardContent className="grid p-0 md:grid-cols-2 h-full">
          
          
-          <form className="p-6 md:p-6">
+          <form className="p-6 md:p-6" action={action}>
             <div className="flex flex-col gap-5">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome!</h1>
@@ -25,40 +32,56 @@ export function RegisterForm({
                   <Label >First Name</Label>
                  
                 </div>
-                <input id="FName" type="text" placeholder="your first name" required className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-8 px-4" />
+                <input id="firstName" name="firstName" type="text" placeholder="your first name" required className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-8 px-4" />
                 </div>
+                {state?.error?.firstName && (<p className="text-sm text-red-500">{state.error.firstName}</p>)}
               <div className="grid gap-1">
                 <div className="flex items-center">
                   <Label>Last Name</Label>
                  
                 </div>
-                <input id="LName" type="text" placeholder="your last name" required className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-8 px-4" />
+                <input id="lastName" name="lastName" type="text" placeholder="your last name" required className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-8 px-4" />
                 </div>
-             
+                {state?.error?.lastName && ( <p className="text-sm text-red-500">{state.error.lastName}</p>)}
+
               <div className="grid gap-1">
                 <Label htmlFor="email">Email</Label>
                 <input
                   id="email"
                   type="email"
+                  name="email"
                   placeholder="Name@example.com"
                   required
                   className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-8 px-4"/>
               </div>
+              {state?.error?.email && ( <p className="text-sm text-red-500">{state.error.email}</p>)}
+
               <div className="grid gap-1">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <input id="password" type="password" placeholder="your password" required className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-8 px-4" />
+                <input id="password" name="password" type="password" placeholder="your password" required className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-8 px-4" />
                 </div>
-                <div className="grid gap-1">
+                {state?.error?.password && (
+                  <div className="text-sm text-red-500">
+                     <p className="text-sm text-red-500">Password must:</p>
+                     <ul >
+                     {state.error.password.map((error)=>(
+                      <li key={error}>{error}</li>
+                     ))}
+                     </ul>
+                  </div>
+                )}
+
+                {/*<div className="grid gap-1">
                 <div className="flex items-center">
                   <Label htmlFor="password">Confirm Password</Label>
                 </div>
-                <input id="password" type="password" placeholder="your password" required className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-8 px-4" />
-                </div>
-              <Button type="submit" className="w-full " variant="default">
-                Register
-              </Button>
+                <input id="confirm-password" type="password" placeholder="Confirm Password" required
+                className="bg-[#F7F7C5] rounded-lg border border-[#d0d089] h-8 px-4" />
+                </div>*/}
+<SubmitButton text="Register" variant="default" />             <div className="flex flex-col gap-2">{state?.message && <p className="text-sm text-red-500">{state.message}</p>}</div>
+
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
                 <span className="relative z-10 bg-background px-2 text-muted-foreground">
                   Or continue with
@@ -74,7 +97,7 @@ export function RegisterForm({
                       fill="currentColor"
                     />
                   </svg>
-                  <span >Login with Google</span>
+                 <a href={`${BACKEND_URL}/auth/google/login`}> <span >Login with Google</span></a>
                 </Button>
               
               </div>
