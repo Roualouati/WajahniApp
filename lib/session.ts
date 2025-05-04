@@ -6,12 +6,13 @@ import { Role } from "./type";
 
 export type Session={
     user:{
-        id: string;
+        id: number;
         firstName: string;
         lastName: string;
         role: Role;
         image: string;
         email: string;
+        baccalaureateType: string;
     };
    accessToken: string;
    refreshToken : string;

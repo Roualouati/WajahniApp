@@ -25,11 +25,13 @@ export async function GET(req: NextRequest) {
 
   await createSession({
     user: {
-      id: userId,
-firstName:firstName,
-lastName:lastName,
+      id: Number(userId),
+      firstName: firstName,
+      lastName: lastName,
 
-        role : role as Role,
+      role: role as Role,
+      image: "",
+      email: ""
     },
     accessToken,
     refreshToken,

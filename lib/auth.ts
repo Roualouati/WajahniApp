@@ -85,7 +85,8 @@ export async function signIn(
         lastName: result.lastName,
         role: result.role,
         image: result.image || "", // Added fallback for image
-        email: result.email || "" // Added fallback for email
+        email: result.email || "" ,// Added fallback for email
+        baccalaureateType: result.baccalaureateType || "", // Added fallback for baccalaureateType
       },
       accessToken: result.accessToken,
       refreshToken: result.refreshToken,

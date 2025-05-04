@@ -66,11 +66,38 @@ export const EditProfileSchema = z.object({
 });
 
 export interface User {
-  id: string;
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
   image?: string;
   role?: Role;
   password: string;
+  baccalaureateType?: string;
+}
+export interface AnswerResponse {
+  nextQuestion?: {
+    id: number;
+    selectedOption: 'Agree' | 'Neutral' | 'Disagree' | null;
+    critiqueId: number;
+    text: string;
+    
+    // Add any other properties your frontend uses from the question
+  };
+  critiqueCompleted: boolean;
+  nextCritique?: {
+    id: number;
+    name: string;
+    description: string;
+    questions: Array<{
+      id: number;
+      selectedOption: 'Agree' | 'Neutral' | 'Disagree' | null;
+      critiqueId: number;
+      text: string;
+    }>;
+  };
+  isLastCritique?: boolean;
+  completed?: boolean;
+  personalityType?: string;
+  personalityDescription?: string;
 }

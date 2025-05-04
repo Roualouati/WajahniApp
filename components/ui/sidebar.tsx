@@ -32,7 +32,6 @@ const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
-
 type SidebarContextProps = {
   state: "expanded" | "collapsed"
   open: boolean
@@ -267,7 +266,7 @@ function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
-      className={cn("size-7", className)}
+      className={cn("size-11", className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
@@ -338,7 +337,7 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sidebar-header"
       data-sidebar="header"
-      className={cn("flex flex-col gap-2 p-2", className)}
+      className={cn("flex flex-col gap-2 p-4", className)}
       {...props}
     />
   )

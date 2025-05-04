@@ -5,10 +5,11 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-export default function OnboardingTest() {
+
+export default  function OnboardingTest() {
+   
   const [progress, setProgress] = useState(0);
 
-  // Simulate loading progress for demo purposes
   useEffect(() => {
     const timer = setTimeout(() => {
       setProgress(100);
@@ -122,25 +123,16 @@ export default function OnboardingTest() {
           transition={{ delay: 1.4 }}
           className="pt-4"
         >
-          <Link href="/test" passHref>
-            <motion.button
-              className="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-green-200 transition-all duration-300 flex items-center gap-2 group"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Begin  Test
-              <motion.span
-                initial={{ x: 0 }}
-                animate={{
-                  x: [0, 4, 0],
-                  transition: { repeat: Infinity, duration: 2 }
-                }}
-                className="group-hover:translate-x-1 transition-transform"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </motion.span>
-            </motion.button>
-          </Link>
+<Link href="/quiz/start" passHref>
+  <motion.button
+    className="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-green-200 transition-all duration-300 flex items-center gap-2 group"
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.98 }}
+  >
+    Begin Test
+    <ChevronRight className="w-5 h-5" />
+  </motion.button>
+</Link>
         </motion.div>
       </div>
     </div>

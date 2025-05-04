@@ -13,12 +13,10 @@ export const authFetch = async (
 
   options.headers = {
     ...options.headers,
-    Authorization: `Bearer  ${session?.accessToken}`,
+    Authorization: `Bearer ${session?.accessToken}`,
   };
   let response = await fetch(url, options);
-  console.log({
-    StaTUS: response.status,
-  });
+  console.log("AuthFetch Status:", response.status); 
 
   if (response.status === 401) {
     if (!session?.refreshToken)

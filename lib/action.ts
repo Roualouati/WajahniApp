@@ -19,7 +19,7 @@ export const getUsers = async (): Promise<User[]> => {
   return response.json();
 };
 
-export const getUser = async (userId: string): Promise<User> => {
+export const getUser = async (userId: number): Promise<User> => {
   const response = await authFetch(`${BACKEND_URL}/user/${userId}`, {
     method: "GET",
     headers: {
@@ -43,7 +43,7 @@ export const getUser = async (userId: string): Promise<User> => {
 };
 
 export const updateUserProfile = async (
-  userId: string,
+  userId: number,
   userData: {
     firstName?: string;
     lastName?: string;
@@ -91,16 +91,24 @@ export const updateUserProfile = async (
 export const updateProfileAction = async (
   prevState: FormState | null,
   formData: FormData
-): Promise<FormState> => {
-  try {
-    const userId = formData.get("userId") as string;
-    if (!userId) {
-      return {
-        success: false,
-        message: "User ID is required",
-       
-      };
-    }
+  ): Promise<FormState> => {
+    try {
+      const userIdString = formData.get("userId");
+      if (!userIdString) {
+        return {
+          success: false,
+          message: "User ID is required",
+        };
+      }
+  
+      // Convert to number and validate
+      const userId = Number(userIdString);
+      if (isNaN(userId)) {
+        return {
+          success: false,
+          message: "User ID must be a valid number",
+        };
+      }
 
     const rawData = {
       firstName: formData.get("firstName"),
@@ -181,7 +189,7 @@ export const updateProfileAction = async (
   }
 };
 // lib/action.ts
-export async function getCurrentUser(userId: string): Promise<User> {
+export async function getCurrentUser(userId: number): Promise<User> {
   const response = await authFetch(`${BACKEND_URL}/user/${userId}`, {
     method: "GET",
     headers: {
@@ -195,7 +203,7 @@ export async function getCurrentUser(userId: string): Promise<User> {
 
   return response.json();
 }
-export async function deleteUser(userId:string): Promise<void> {
+export async function deleteUser(userId:number): Promise<void> {
   const response = await authFetch(`${BACKEND_URL}/admin/${userId}`, {
     method: "DELETE",
     headers: {
@@ -205,5 +213,47 @@ export async function deleteUser(userId:string): Promise<void> {
 
   if (!response.ok) {
     throw new Error("Failed to delete user");
+  }
+}
+// lib/baccalaureate.ts
+export async function fetchBacType(userId: number): Promise<boolean> {
+
+  try {
+    const response = await authFetch(`${BACKEND_URL}/user/bacType/${userId}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    // Return the 'exists' boolean from the response
+    return data.exists;
+    
+  } catch (error) {
+    console.error("Error fetching bac type:", error);
+    return false;
+  }
+}
+export async function fetchBacDetails(userId: number): Promise<{ exists: boolean; type: string | null }> {
+  try {
+    const response = await authFetch(`${BACKEND_URL}/user/bacType/${userId}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return {
+      exists: data.exists,
+      type: data.bacType
+    };
+    
+  } catch (error) {
+    console.error("Error fetching bac details:", error);
+    return {
+      exists: false,
+      type: null
+    };
   }
 }

@@ -96,14 +96,45 @@ export default function ProfilePage() {
     }
   };
 
-  if (!session) {
+ 
+  if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <p>Please log in to view your profile</p>
-      </div>
+      <Card className="w-full max-w-2xl mx-auto mt-[5%]">
+        <CardContent className="p-6">
+          <div className="space-y-6">
+            <Skeleton className="h-8 w-24" />
+            <div className="flex flex-col items-center">
+              <Skeleton className="w-32 h-32 rounded-full" />
+              <Skeleton className="h-4 w-48 mt-2" />
+            </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-48" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-3 w-64" />
+            </div>
+            <div className="flex justify-between">
+              <Skeleton className="h-10 w-24" />
+              <Skeleton className="h-10 w-36" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
-
   return (
     <Card className="w-full max-w-2xl mx-auto mt-[5%]">
       <CardContent className="p-6">
@@ -118,7 +149,7 @@ export default function ProfilePage() {
           }
           
           return formAction(formData);
-        }} encType="multipart/form-data">
+        }} >
           <input type="hidden" name="userId" value={session?.user?.id} />
           <a href='/user' style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-chevrons-left-icon lucide-chevrons-left">
